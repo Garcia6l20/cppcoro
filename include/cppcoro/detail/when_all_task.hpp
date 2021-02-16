@@ -300,7 +300,7 @@ namespace cppcoro
 			typename AWAITABLE,
 			typename RESULT = typename cppcoro::awaitable_traits<AWAITABLE&&>::await_result_t,
 			std::enable_if_t<!std::is_void_v<RESULT>, int> = 0>
-		when_all_task<RESULT> make_when_all_task(AWAITABLE awaitable)
+		when_all_task<RESULT> make_when_all_task(AWAITABLE&& awaitable)
 		{
 #if CPPCORO_COMPILER_MSVC && CPPCORO_COMPILER_MSVC < 19'20'00000
 			// HACK: Workaround another bug in MSVC where the expression 'co_yield co_await x' seems
@@ -319,7 +319,7 @@ namespace cppcoro
 			typename AWAITABLE,
 			typename RESULT = typename cppcoro::awaitable_traits<AWAITABLE&&>::await_result_t,
 			std::enable_if_t<std::is_void_v<RESULT>, int> = 0>
-		when_all_task<void> make_when_all_task(AWAITABLE awaitable)
+		when_all_task<void> make_when_all_task(AWAITABLE&& awaitable)
 		{
 			co_await static_cast<AWAITABLE&&>(awaitable);
 		}
